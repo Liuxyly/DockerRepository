@@ -61,9 +61,12 @@ RUN set -eux; \
 # smoke test
 	julia --version
 
-RUN /usr/local/julia/bin/julia -e 'import Pkg Pkg.add("PkgMirrors") Pkg.build("PkgMirrors") PkgMirrors.setmirror("ZJU")'
+RUN /usr/local/julia/bin/julia -e 'Pkg.add("PkgMirrors")'
 
-RUN /usr/local/julia/bin/julia -e 'import Pkg Pkg.add("IJulia") Pkg.build("IJulia")'
+RUN /usr/local/julia/bin/julia -e 'Pkg.build("PkgMirrors")'
 
-# Switch back to jovyan to avoid accidental container runs as root
-USER $NB_UID
+RUN /usr/local/julia/bin/julia -e 'PkgMirrors.setmirror("ZJU")'
+
+RUN /usr/local/julia/bin/julia -e 'Pkg.add("IJulia")'
+
+RUN /usr/local/julia/bin/julia -e  'Pkg.build("IJulia")'
