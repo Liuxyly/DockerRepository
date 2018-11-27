@@ -61,9 +61,9 @@ RUN set -eux; \
 # smoke test
 	julia --version
 
-ADD addPacks.jl /var/
+RUN /usr/local/julia/bin/julia -e 'import Pkg Pkg.add("PkgMirrors") Pkg.build("PkgMirrors") PkgMirrors.setmirror("ZJU")'
 
-RUN julia /var/addPacks.jl
+RUN /usr/local/julia/bin/julia -e 'import Pkg Pkg.add("IJulia") Pkg.build("IJulia")'
 
 # Switch back to jovyan to avoid accidental container runs as root
 USER $NB_UID
