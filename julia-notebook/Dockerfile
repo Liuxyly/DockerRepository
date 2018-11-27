@@ -179,5 +179,9 @@ RUN set -eux; \
 # smoke test
 	julia --version
 
+ADD addPacks.jl /var/
+
+RUN julia /var/addPacks.jl
+
 # Switch back to jovyan to avoid accidental container runs as root
 USER $NB_UID
