@@ -20,6 +20,7 @@ RUN set -eux; \
 		apt-get update; \
 		apt-get install -y --no-install-recommends \
 			gnupg \
+         curl \
 			dirmngr \
 		; \
 		rm -rf /var/lib/apt/lists/*; \
