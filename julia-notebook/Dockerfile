@@ -11,8 +11,6 @@ ENV JULIA_GPG 3673DF529D9049477F76B37566E3C7DC03D6E495
 # https://julialang.org/downloads/
 ENV JULIA_VERSION 1.0.2
 
-USER root
-
 RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
