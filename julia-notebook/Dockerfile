@@ -63,4 +63,6 @@ RUN set -eux; \
 	julia --version
 RUN /usr/local/julia/bin/julia -e 'import Pkg; Pkg.add("PkgMirrors"); Pkg.build("PkgMirrors"); Pkg.add("IJulia"); Pkg.build("IJulia")'
 
+RUN chown -R ${NB_UID}:${NB_GID} ~/
+
 USER $NB_UID
