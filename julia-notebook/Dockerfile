@@ -15,13 +15,13 @@ RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
 	if ! command -v gpg > /dev/null; then \
-		apt-get update; \
-		apt-get install -y --no-install-recommends \
+		sudo apt-get update; \
+		sudo apt-get install -y --no-install-recommends \
 			gnupg \
-         curl \
+         	curl \
 			dirmngr \
 		; \
-		rm -rf /var/lib/apt/lists/*; \
+		sudo rm -rf /var/lib/apt/lists/*; \
 	fi; \
 	\
 # https://julialang.org/downloads/#julia-command-line-version
@@ -37,8 +37,8 @@ RUN set -eux; \
 	esac; \
 	\
 	folder="$(echo "$JULIA_VERSION" | cut -d. -f1-2)"; \
-	curl -fL -o julia.tar.gz.asc "https://julialang-s3.julialang.org/bin/linux/${dirArch}/${folder}/julia-${JULIA_VERSION}-linux-${tarArch}.tar.gz.asc"; \
-	curl -fL -o julia.tar.gz     "https://julialang-s3.julialang.org/bin/linux/${dirArch}/${folder}/julia-${JULIA_VERSION}-linux-${tarArch}.tar.gz"; \
+	sudo curl -fL -o julia.tar.gz.asc "https://julialang-s3.julialang.org/bin/linux/${dirArch}/${folder}/julia-${JULIA_VERSION}-linux-${tarArch}.tar.gz.asc"; \
+	sudo curl -fL -o julia.tar.gz     "https://julialang-s3.julialang.org/bin/linux/${dirArch}/${folder}/julia-${JULIA_VERSION}-linux-${tarArch}.tar.gz"; \
 	\
 	echo "${sha256} *julia.tar.gz" | sha256sum -c -; \
 	\
@@ -46,15 +46,15 @@ RUN set -eux; \
 	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$JULIA_GPG"; \
 	gpg --batch --verify julia.tar.gz.asc julia.tar.gz; \
 	command -v gpgconf > /dev/null && gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" julia.tar.gz.asc; \
+	sudo rm -rf "$GNUPGHOME" julia.tar.gz.asc; \
 	\
-	mkdir "$JULIA_PATH"; \
-	tar -xzf julia.tar.gz -C "$JULIA_PATH" --strip-components 1; \
-	rm julia.tar.gz; \
+	sudo mkdir "$JULIA_PATH"; \
+	sudo tar -xzf julia.tar.gz -C "$JULIA_PATH" --strip-components 1; \
+	sudo rm julia.tar.gz; \
 	\
-	apt-mark auto '.*' > /dev/null; \
+	sudo apt-mark auto '.*' > /dev/null; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	sudo apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
 # smoke test
 	julia --version
