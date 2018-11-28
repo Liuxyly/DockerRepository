@@ -62,3 +62,5 @@ RUN set -eux; \
 # smoke test
 	julia --version
 RUN /usr/local/julia/bin/julia -e 'import Pkg; Pkg.add("PkgMirrors"); Pkg.build("PkgMirrors"); Pkg.add("IJulia"); Pkg.build("IJulia")'
+
+USER $NB_UID
