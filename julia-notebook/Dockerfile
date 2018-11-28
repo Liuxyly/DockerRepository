@@ -46,7 +46,7 @@ RUN set -eux; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
 	# gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$JULIA_GPG"; \
-	gpg --batch --keyserver sks-keyservers.net --recv-keys "$JULIA_GPG"; \
+	gpg --batch --keyserver pgp.mit.edu --recv-keys "$JULIA_GPG"; \
 	gpg --batch --verify julia.tar.gz.asc julia.tar.gz; \
 	command -v gpgconf > /dev/null && gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" julia.tar.gz.asc; \
@@ -61,6 +61,7 @@ RUN set -eux; \
 	\
 # smoke test
 	julia --version
+RUN /usr/local/julia/bin/julia -e 'import Pkg'
 
 RUN /usr/local/julia/bin/julia -e 'Pkg.add("PkgMirrors")'
 
